@@ -8,10 +8,7 @@ use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ExpenseController;
 
 
-
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/login');
 
 Route::resource('expenses', ExpenseController::class)
      ->middleware(['auth']);
