@@ -102,6 +102,18 @@
         :active="request()->routeIs('categories.*')">
         {{ __('Categories') }}
     </x-responsive-nav-link>
+    
+    <x-responsive-nav-link 
+       :href="route('budgets.index')" 
+    :active="request()->routeIs('budgets.*')">
+    {{ __('Budgets') }}
+    </x-responsive-nav-link>
+    
+    <x-responsive-nav-link 
+     :href="route('expenses.index')" 
+    :active="request()->routeIs('expenses.*')">
+    {{ __('Expenses') }}
+    </x-responsive-nav-link>
 
 </div>
 
