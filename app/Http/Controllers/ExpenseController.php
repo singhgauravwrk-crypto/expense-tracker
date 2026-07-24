@@ -6,6 +6,7 @@ use App\Models\Expense;
 use App\Models\Category;
 use App\Models\Budget;
 use Illuminate\Http\Request;
+use App\Models\Expense;
 
 class ExpenseController extends Controller
 {
@@ -41,48 +42,67 @@ class ExpenseController extends Controller
 
 
 
-    public function store(Request $request)
-    {
+   public function store(Request $request)
+{
+    $request->validate([
 
-        $request->validate([
+        'category_id' => 'required|exists:categories,id',
 
-            'category_id'=>'required|exists:categories,id',
+        'budget_id' => 'nullable|exists:budgets,id',
 
-            'budget_id'=>'nullable|exists:budgets,id',
+        'amount' => 'required|numeric|min:1',
 
-            'amount'=>'required|numeric|min:1',
+        'expense_date' => 'required|date',
 
-            'expense_date'=>'required|date',
+        'description' => 'nullable|string'
 
-            'description'=>'nullable|string'
+    ]);
 
-        ]);
+    auth()->user()
+          ->expenses()
+          ->create([
 
+              'category_id' => $request->category_id,
 
-        auth()->user()
-              ->expenses()
-              ->create([
+              'budget_id' => $request->budget_id,
 
-                'category_id'=>$request->category_id,
+              'amount' => $request->amount,
 
-                'budget_id'=>$request->budget_id,
+              'expense_date' => $request->expense_date,
 
-                'amount'=>$request->amount,
+              'description' => $request->description
 
-                'expense_date'=>$request->expense_date,
-
-                'description'=>$request->description
-
-              ]);
+          ]);
 
 
+    // Check if budget has been exceeded
+    $budget = Budget::where('user_id', auth()->id())
+                    ->where('category_id', $request->category_id)
+                    ->first();
 
-        return redirect()
+    if ($budget) {
+
+        $spent = Expense::where('user_id', auth()->id())
+                        ->where('category_id', $request->category_id)
+                        ->sum('amount');
+
+        if ($spent > $budget->amount) {
+
+            return redirect()
                 ->route('expenses.index')
-                ->with('success','Expense added successfully');
-
+                ->with('budgetExceeded', [
+                    'category'  => $budget->category->name,
+                    'budget'    => $budget->amount,
+                    'spent'     => $spent,
+                    'exceeded'  => $spent - $budget->amount,
+                ]);
+        }
     }
 
+    return redirect()
+            ->route('expenses.index')
+            ->with('success', 'Expense added successfully');
+}
 
 
     public function destroy(Expense $expense)

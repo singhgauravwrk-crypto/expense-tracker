@@ -32,5 +32,57 @@
                 {{ $slot }}
             </main>
         </div>
-    </body>
+   @if(session('budgetExceeded'))
+
+<div id="budgetModal"
+     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+
+    <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
+
+        <div class="flex items-center gap-2 mb-4">
+            <span class="text-3xl">⚠️</span>
+            <h2 class="text-2xl font-bold text-red-600">
+                Budget Exceeded
+            </h2>
+        </div>
+
+        <div class="space-y-2 text-gray-700">
+
+            <p>
+                <strong>Category:</strong>
+                {{ session('budgetExceeded.category') }}
+            </p>
+
+            <p>
+                <strong>Budget:</strong>
+                ₹{{ number_format(session('budgetExceeded.budget'),2) }}
+            </p>
+
+            <p>
+                <strong>Total Spent:</strong>
+                ₹{{ number_format(session('budgetExceeded.spent'),2) }}
+            </p>
+
+            <p class="text-red-600 font-semibold text-lg">
+                Over Budget by
+                ₹{{ number_format(session('budgetExceeded.exceeded'),2) }}
+            </p>
+
+        </div>
+
+        <button
+            onclick="document.getElementById('budgetModal').style.display='none'"
+            class="mt-6 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-200">
+
+            Close
+
+        </button>
+
+    </div>
+
+</div>
+
+@endif
+
+</body>
 </html>
