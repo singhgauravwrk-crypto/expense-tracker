@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Budget;
 use App\Models\Expense;
 
-class Category extends Model
+class Budget extends Model
 {
     protected $fillable = [
-        'name'
+        'category_id',
+        'amount',
+        'start_date',
+        'end_date'
     ];
 
 
@@ -17,11 +19,13 @@ class Category extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function budgets()
-{
-    return $this->hasMany(Budget::class);
-}
-public function expenses()
+
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    public function expenses()
 {
     return $this->hasMany(Expense::class);
 }

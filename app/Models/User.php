@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Category;
+use App\Models\Budget;
+use App\Models\Expense;
 
 class User extends Authenticatable
 {
@@ -52,5 +54,13 @@ class User extends Authenticatable
     public function categories()
 {
     return $this->hasMany(Category::class);
+}
+public function budgets()
+{
+    return $this->hasMany(Budget::class);
+}
+public function expenses()
+{
+    return $this->hasMany(Expense::class);
 }
 }

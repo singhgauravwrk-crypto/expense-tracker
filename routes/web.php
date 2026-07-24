@@ -4,17 +4,23 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\ExpenseController;
+
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::resource('expenses', ExpenseController::class)
+     ->middleware(['auth']);
+     
+Route::resource('budgets', BudgetController::class)
+     ->middleware(['auth']);
 
 Route::middleware(['auth'])->group(function () {
-
     Route::resource('categories', CategoryController::class);
-
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
