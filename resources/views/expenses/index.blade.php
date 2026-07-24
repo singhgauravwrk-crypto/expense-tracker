@@ -24,7 +24,7 @@ class="bg-blue-600 text-black px-5 py-2 rounded-lg">
 
 
 
-<div class="mt-6 bg-black shadow rounded p-6">
+<div class="mt-6 bg-white shadow rounded p-6">
 
 
 @forelse($expenses as $expense)
