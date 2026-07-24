@@ -6,7 +6,6 @@ use App\Models\Expense;
 use App\Models\Category;
 use App\Models\Budget;
 use Illuminate\Http\Request;
-use App\Models\Expense;
 
 class ExpenseController extends Controller
 {
